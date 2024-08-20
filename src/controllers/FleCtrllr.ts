@@ -1,12 +1,12 @@
 // src/controllers/FileController.ts
 import { Request, Response, NextFunction } from 'express'
-import { CfgFileService } from '../services/CfgFileService'
+import { CfgFileService } from '../services/CfgFileS'
 import { Hosts } from '../types'
 
 export class FileController {
   constructor (private readonly cfgFileService: CfgFileService) {}
 
-  public getFileContent = (
+  public getCfgFileContent = (
     _req: Request,
     res: Response,
     next: NextFunction

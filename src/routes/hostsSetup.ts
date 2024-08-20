@@ -1,13 +1,13 @@
 import exppress from 'express'
-import { FileController } from '../controllers/FleController'
-import { CfgFileService } from '../services/CfgFileService'
-import { FileService } from '../services/FileService'
+import { FileController } from '../controllers/FleCtrllr'
+import { CfgFileService } from '../services/CfgFileS'
+import { FileService } from '../services/FileS'
 
 const router = exppress.Router()
 
 const fileController = new FileController(new CfgFileService(new FileService()))
 
-router.get('/file-content', fileController.getFileContent)
+router.get('/cfg-file-content', fileController.getCfgFileContent)
 
 router.get('/ping-hosts', fileController.pingHosts)
 

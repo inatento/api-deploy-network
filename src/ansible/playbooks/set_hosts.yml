@@ -1,0 +1,5 @@
+- name: Instalar dependencias en hosts
+  hosts: all
+  become: yes  # Para ejecutar con privilegios de sudo
+  roles:
+   - install_docker
