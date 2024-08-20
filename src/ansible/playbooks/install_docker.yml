@@ -1,0 +1,79 @@
+- name: Instalar y configurar Docker en Organizaciones
+  hosts: all
+  become: yes  # Para ejecutar con privilegios de sudo
+  tasks:
+    - name: Actualizar los paquetes APT
+      apt:
+        update_cache: yes
+
+    - name: Instalar dependencias para Docker
+      apt:
+        name: 
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Añadir la clave GPG de Docker
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Añadir el repositorio de Docker
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Actualizar la caché APT nuevamente
+      apt:
+        update_cache: yes
+
+    - name: Instalar Docker CE
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Verificar instalación de Docker
+      command: docker info
+
+    - name: Añadir el usuario al grupo docker
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: Configurar el archivo daemon.json
+      copy:
+        content: |
+          {
+            "log-driver": "json-file",
+            "log-opts": {
+              "max-size": "10m",
+              "max-file": "3"
+            }
+          }
+        dest: /etc/docker/daemon.json
+
+    - name: Reiniciar el servicio de Docker
+      service:
+        name: docker
+        state: restarted
+
+    - name: Descargar Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}"
+        dest: /usr/bin/docker-compose
+        mode: '0755'
+
+    - name: Asignar permisos a Docker Compose
+      file:
+        path: /usr/bin/docker-compose
+        mode: '0755'
+        
+    - name: Establecer permisos para /var/run/docker.sock
+      file:
+        path: /var/run/docker.sock
+        mode: '0666'
+      tags: 
+        - set-docker-permissions

@@ -1,0 +1,15 @@
+- name: Test play
+  hosts: orgs
+  become: yes
+  tasks:
+   - name: Ping my hosts
+     ansible.builtin.ping:
+
+   - name: Print message
+     ansible.builtin.debug:
+      msg: Hello world
+
+   - name: Crear un archivo de texto con "Hola mundo"
+     copy:
+      content: "Hola mundo"
+      dest: /home/tesseract/hola_mundo.txt

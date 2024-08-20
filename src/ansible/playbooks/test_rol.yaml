@@ -1,0 +1,5 @@
+- name: Test play con rol
+  hosts: orgs
+  become: yes
+  roles:
+   - test
