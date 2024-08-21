@@ -36,9 +36,28 @@ export class HostsControlCtrllr {
       })
       .catch(error => {
         if (error instanceof Error) {
-          next(new Error(`Error al hacer ping: ${error.message}`))
+          next(new Error(`Error al instalar Docker: ${error.message}`))
         } else {
-          next(new Error('Un error desconocido ocurrió en el ping'))
+          next(new Error('Un error desconocido ocurrió al instalar Docker'))
+        }
+      })
+  }
+
+  public deployCA = (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    this.hostCtrlS
+      .deployCA()
+      .then(output => {
+        res.json({ message: 'CAs instaladas en los hosts', output })
+      })
+      .catch(error => {
+        if (error instanceof Error) {
+          next(new Error(`Error al desplegar las CAs: ${error.message}`))
+        } else {
+          next(new Error('Un error desconocido ocurrió al desplegar las CAs'))
         }
       })
   }

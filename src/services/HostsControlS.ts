@@ -20,6 +20,11 @@ export class HostsControlService {
     '../ansible/playbooks/set_hosts.yml'
   )
 
+  private readonly deployCAPath: string = path.resolve(
+    __dirname,
+    '../ansible/playbooks/deploy_ca.yaml'
+  )
+
   private async executeAnsibleCommand (command: string): Promise<string> {
     try {
       const { stdout, stderr } = await execPromise(command, {
@@ -35,10 +40,10 @@ export class HostsControlService {
       return stdout
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(`Error executing Ansible command: ${error.message}`)
+        throw new Error(`Error al comunicarse son los hosts: ${error.message}`)
       } else {
         throw new Error(
-          'Unknown error occurred while executing the Ansible command'
+          'Ocurrió un error desconocido al comunicarse con los hosts'
         )
       }
     }
@@ -51,6 +56,11 @@ export class HostsControlService {
 
   public async installDocker (): Promise<string> {
     const command = `ansible-playbook -i ${this.hostsCfgPath} ${this.setHostsPath}`
+    return await this.executeAnsibleCommand(command)
+  }
+
+  public async deployCA (): Promise<string> {
+    const command = `ansible-playbook -i ${this.hostsCfgPath} ${this.deployCAPath}`
     return await this.executeAnsibleCommand(command)
   }
 }

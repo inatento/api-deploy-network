@@ -1,16 +1,3 @@
-# - name: Ping my hosts
-#   ansible.builtin.ping:
-
-# - name: Print message
-#   ansible.builtin.debug:
-#    msg: Hello world
-
-# - name: Crear un archivo de texto con "Hola mundo"
-#   copy:
-#    content: "Hola mundo desde deploy_cas"
-#    dest: /home/tesseract/hola_mundo.txt
-
----
 - name: Crear directorio para Docker Compose en el nodo remoto
   file:
     path: /opt/merkaba-ca/merkaba
@@ -20,14 +7,14 @@
 
 - name: Copiar archivo de configuración merkaba/fabric-ca-server-config.yaml al nodo remoto
   copy:
-    src: /home/tesseract/merkaba-dispersed/ansible/roles/deploy_cas/files/config/merkaba/fabric-ca-server-config.yaml
+    src: "{{ lookup('env', 'PWD') }}/src/ansible/roles/deploy_cas/files/config/merkaba/fabric-ca-server-config.yaml"
     dest: /opt/merkaba-ca/merkaba/fabric-ca-server-config.yaml
   tags: 
     - copy-ca-config-file
 
 - name: Copiar archivo docker-compose compose-ca-merkaba.yaml al nodo remoto
   copy:
-    src: /home/tesseract/merkaba-dispersed/ansible/roles/deploy_cas/files/compose/compose-ca-merkaba.yaml
+    src: "{{ lookup('env', 'PWD') }}/src/ansible/roles/deploy_cas/files/compose/compose-ca-merkaba.yaml"
     dest: /opt/merkaba-ca/merkaba/docker-compose.yaml
   tags: 
     - copy-ca-docker-compose

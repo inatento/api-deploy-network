@@ -1,5 +1,5 @@
 - name: Desplegar CA - Merkaba
-  hosts: ca_merkaba
+  hosts: cas
   become: yes
   roles:
    - deploy_cas
