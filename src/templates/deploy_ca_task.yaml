@@ -1,0 +1,31 @@
+- name: Desplegar CA - {{HOST_NAME_CAP}}
+  hosts: cas:{{HOST_NAME}}
+  become: yes
+  tasks:
+   - name: Crear directorio para Docker Compose en el nodo remoto
+     file:
+       path: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}
+       state: directory
+     tags: 
+       - set-docker-directory
+
+   - name: Copiar archivo de configuración {{HOST_NAME}}/fabric-ca-server-config.yaml al nodo remoto
+     copy:
+       src: "{{ lookup('env', 'PWD') }}/src/generated_files/ca/{{HOST_NAME}}/{{HOST_NAME}}-fabric-ca-server-config.yaml"
+       dest: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}/fabric-ca-server-config.yaml
+     tags: 
+       - copy-ca-config-file
+
+   - name: Copiar archivo docker-compose compose-ca-{{HOST_NAME}}.yaml al nodo remoto
+     copy:
+       src: "{{ lookup('env', 'PWD') }}/src/generated_files/ca/{{HOST_NAME}}/{{HOST_NAME}}-docker-compose.yaml"
+       dest: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}/docker-compose.yaml
+     tags: 
+       - copy-ca-docker-compose
+
+   - name: Desplegar el contenedor de {{HOST_NAME}}-ca usando Docker Compose
+     command: docker-compose -f /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}/docker-compose.yaml up -d
+     args:
+       chdir: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}
+     tags: 
+       - deploy-ca-docker-compose

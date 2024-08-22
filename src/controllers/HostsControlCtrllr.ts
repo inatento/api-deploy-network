@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import { HostsControlService } from '../services/HostsControlS'
 
 export class HostsControlCtrllr {
-  constructor (private readonly hostCtrlS: HostsControlService) {}
+  private readonly hostCtrlS = new HostsControlService()
 
   public pingHosts = (
     _req: Request,

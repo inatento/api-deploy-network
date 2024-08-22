@@ -4,7 +4,7 @@ import { CfgFileService } from '../services/CfgFileS'
 import { Hosts } from '../types'
 
 export class FileController {
-  constructor (private readonly cfgFileService: CfgFileService) {}
+  private readonly cfgFileService = new CfgFileService()
 
   public getCfgFileContent = (
     _req: Request,

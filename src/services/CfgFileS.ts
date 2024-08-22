@@ -7,15 +7,15 @@ import { FileService } from './FileS'
 const execPromise = promisify(exec)
 
 export class CfgFileService {
-  constructor (private readonly fileService: FileService) {}
+  private readonly fileService = new FileService()
 
-  private readonly filePath: string = path.resolve(
+  private readonly cfgFilePath: string = path.resolve(
     __dirname,
     '../ansible/inventory/hosts.yml'
   )
 
   public async readFile (): Promise<Hosts> {
-    const data = await this.fileService.readFile(this.filePath)
+    const data = await this.fileService.readFileYAML(this.cfgFilePath)
     return data
   }
 
@@ -26,7 +26,7 @@ export class CfgFileService {
     ansibleHost: string,
     ansibleUser: string
   ): Promise<void> {
-    const data = await this.fileService.readFile(this.filePath)
+    const data = await this.fileService.readFileYAML(this.cfgFilePath)
 
     const sectionHosts = data?.[section]?.hosts
 
@@ -54,7 +54,7 @@ export class CfgFileService {
         ansible_user: ansibleUser
       }
       // Guardar los cambios en el archivo YAML
-      this.fileService.writeYAMLFile(this.filePath, data)
+      this.fileService.writeYAMLFile(this.cfgFilePath, data)
       console.log(`Host ${key} agregado en la sección ${section}.`)
     } else {
       throw new Error(`Sección ${section} no encontrada o no contiene hosts.`)
@@ -63,7 +63,7 @@ export class CfgFileService {
 
   // Eliminar un host existente
   public async deleteHost (section: keyof Hosts, key: string): Promise<void> {
-    const data = await this.fileService.readFile(this.filePath)
+    const data = await this.fileService.readFileYAML(this.cfgFilePath)
 
     const sectionData = data[section]
     const sectionHosts = sectionData?.hosts
@@ -91,7 +91,7 @@ export class CfgFileService {
         hosts: remainingHosts
       }
       // Guardar los cambios en el archivo YAML
-      this.fileService.writeYAMLFile(this.filePath, data)
+      this.fileService.writeYAMLFile(this.cfgFilePath, data)
       console.log(`Host ${key} eliminado de la sección ${section}.`)
     } else {
       throw new Error(`Sección ${section} no encontrada o no contiene hosts.`)
@@ -101,7 +101,7 @@ export class CfgFileService {
   public async pingHosts (): Promise<string> {
     try {
       const { stdout, stderr } = await execPromise(
-        `ansible -i ${this.filePath} all -m ping`
+        `ansible -i ${this.cfgFilePath} all -m ping`
       )
       // Validar stderr explícitamente
       if (stderr != null && stderr.trim().length > 0) {

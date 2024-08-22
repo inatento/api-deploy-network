@@ -1,10 +1,9 @@
 import exppress from 'express'
 import { HostsControlCtrllr } from '../controllers/HostsControlCtrllr'
-import { HostsControlService } from '../services/HostsControlS'
 
 const router = exppress.Router()
 
-const hostsCtrlCtrllr = new HostsControlCtrllr(new HostsControlService())
+const hostsCtrlCtrllr = new HostsControlCtrllr()
 
 router.get('/ping-hosts', hostsCtrlCtrllr.pingHosts)
 

@@ -80,7 +80,7 @@ tls:
 #############################################################################
 ca:
   # Name of this CA
-  name: OrdererCA
+  name: {{HOST_NAME_CAP}}CA
   # Key file (is only used to import a private key into BCCSP)
   keyfile:
   # Certificate file (default: ca-cert.pem)
@@ -237,7 +237,7 @@ ldap:
 # which are always stored in lower case.
 #############################################################################
 affiliations:
-   merkaba:
+   {{HOST_NAME}}:
       - department1
       - department2
    visa:
@@ -303,16 +303,17 @@ signing:
 #     CA certificates though it can still issue end entity certificates.
 ###########################################################################
 csr:
-   cn: ca.cooperativa.com
+   cn: ca.{{HOST_NAME}}.cooperativa.com
    names:
       - C: US
-        ST: "New York"
-        L: "New York"
-        O: cooperativa.com
+        ST: "North Carolina"
+        L: "Durham"
+        O: {{HOST_NAME}}.cooperativa.com
         OU:
    hosts:
      - localhost
-     - cooperativa.com
+     - {{HOST_NAME}}.cooperativa.com
+     - {{HOST}}
    ca:
       expiry: 131400h
       pathlength: 1

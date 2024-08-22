@@ -3,14 +3,14 @@ import yaml from 'js-yaml'
 import { Hosts } from '../types'
 
 export class FileService {
-  public async readFile (path: string): Promise<Hosts> {
+  public async readFileYAML (path: string): Promise<Hosts> {
     try {
       const fileContent = fs.readFileSync(path, 'utf8')
       const data = yaml.load(fileContent) as Hosts
       return data
     } catch (error: any) {
       if (error instanceof Error) {
-        throw new Error(`Error reading file: ${error.message}`)
+        throw new Error(`Error al leer el archivo: ${error.message}`)
       } else {
         throw new Error('Unknown error occurred while reading the file')
       }
@@ -20,10 +20,9 @@ export class FileService {
   public writeYAMLFile (path: string, data: Record<string, any>): void {
     try {
       fs.writeFileSync(path, yaml.dump(data))
-      console.log('Archivo YAML actualizado exitosamente.')
     } catch (e) {
       if (e instanceof Error) {
-        throw new Error(`Error reading file: ${e.message}`)
+        throw new Error(`Error al escribir el archivo: ${e.message}`)
       } else {
         throw new Error('Unknown error occurred while reading the file')
       }
