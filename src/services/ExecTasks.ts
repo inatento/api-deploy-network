@@ -12,7 +12,7 @@ export class ExecTasks {
 
   private readonly hostsCfgPath: string = path.resolve(
     __dirname,
-    '../ansible/inventory/hosts.yml'
+    '../ansible/inventory/hosts.yaml'
   )
 
   private async executeCommand (command: string): Promise<string> {
@@ -38,6 +38,7 @@ export class ExecTasks {
 
   private async executeAnsibleCommand (command: string): Promise<string> {
     try {
+      console.log(`Comando Ansible: ${command}`)
       const { stdout, stderr } = await execPromise(command, {
         env: {
           ...process.env,
@@ -51,7 +52,7 @@ export class ExecTasks {
       return stdout
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(`Error al comunicarse son los hosts: ${error.message}`)
+        throw new Error(`Error al comunicarse con los hosts: ${error.message}`)
       } else {
         throw new Error(
           'Ocurrió un error desconocido al comunicarse con los hosts'

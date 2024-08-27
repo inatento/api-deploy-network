@@ -313,7 +313,7 @@ csr:
    hosts:
      - localhost
      - {{HOST_NAME}}.cooperativa.com
-     - {{HOST}}
+     - {{IP}}
    ca:
       expiry: 131400h
       pathlength: 1

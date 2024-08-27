@@ -3,7 +3,7 @@ import { CfgFileService } from './CfgFileS'
 
 export class HostsService {
   private readonly cfgFileService = new CfgFileService()
-  private readonly hostsPath: string = './src/ansible/inventory/hosts.yml'
+  private readonly hostsPath: string = './src/ansible/inventory/hosts.yaml'
 
   public async getCAHosts (): Promise<Record<string, HostsContent>> {
     const hosts = await this.cfgFileService.readFile()

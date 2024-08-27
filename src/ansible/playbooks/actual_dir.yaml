@@ -1,0 +1,6 @@
+- name: Mostrar el directorio de trabajo actual
+  hosts: all
+  tasks:
+    - name: Imprimir el directorio de trabajo actual
+      debug:
+        msg: "El directorio de trabajo actual es: {{ lookup('env', 'PWD') }}"

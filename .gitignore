@@ -1,6 +1,6 @@
 node_modules/
 src/generated_files/
-src/ansible/playbooks/
+# src/ansible/playbooks/
 logs/
 temp/
 .env

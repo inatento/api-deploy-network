@@ -6,7 +6,7 @@ export class HostsControlService {
 
   private readonly setHostsPath: string = path.resolve(
     __dirname,
-    '../ansible/playbooks/set_hosts.yml'
+    '../ansible/playbooks/set_hosts.yaml'
   )
 
   private readonly deployCAPath: string = path.resolve(
@@ -22,6 +22,9 @@ export class HostsControlService {
     return await this.execTasks.runAnsibleCommand(this.setHostsPath, true)
   }
 
+  /**
+   * @deprecated Esta función será eliminada en futuras versiones.
+   */
   public async deployCA (): Promise<string> {
     return await this.execTasks.runAnsibleCommand(this.deployCAPath, true)
   }

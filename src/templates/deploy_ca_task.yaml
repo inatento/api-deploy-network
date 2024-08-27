@@ -1,5 +1,5 @@
 - name: Desplegar CA - {{HOST_NAME_CAP}}
-  hosts: cas:{{HOST_NAME}}
+  hosts: cas:&{{HOST_NAME}}
   become: yes
   tasks:
    - name: Crear directorio para Docker Compose en el nodo remoto

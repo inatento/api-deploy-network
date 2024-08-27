@@ -1,0 +1,31 @@
+- name: Revertir Despliegue de CA - {{HOST_NAME_CAP}}
+  hosts: cas:&{{HOST_NAME}}
+  become: yes
+  tasks:
+    - name: Detener y eliminar el contenedor de {{HOST_NAME}}-ca
+      command: docker-compose -f /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}/docker-compose.yaml down
+      args:
+        chdir: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}
+      tags:
+        - remove-ca-docker-compose
+
+    - name: Eliminar archivo docker-compose.yaml del nodo remoto
+      file:
+        path: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}/docker-compose.yaml
+        state: absent
+      tags:
+        - remove-ca-docker-compose-file
+
+    - name: Eliminar archivo de configuración fabric-ca-server-config.yaml del nodo remoto
+      file:
+        path: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}/fabric-ca-server-config.yaml
+        state: absent
+      tags:
+        - remove-ca-config-file
+
+    - name: Eliminar el directorio para Docker Compose en el nodo remoto
+      file:
+        path: /opt/{{HOST_NAME}}-ca/{{HOST_NAME}}
+        state: absent
+      tags:
+        - remove-docker-directory

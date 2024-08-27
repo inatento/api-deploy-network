@@ -11,7 +11,7 @@ export class CfgFileService {
 
   private readonly cfgFilePath: string = path.resolve(
     __dirname,
-    '../ansible/inventory/hosts.yml'
+    '../ansible/inventory/hosts.yaml'
   )
 
   public async readFile (): Promise<Hosts> {

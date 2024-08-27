@@ -11,6 +11,6 @@ router.get('/ping-hosts', fileController.pingHosts)
 
 router.post('/add-host', fileController.addHost)
 
-router.post('/delete-host', fileController.deleteHost)
+router.delete('/delete-host', fileController.deleteHost)
 
 export default router
